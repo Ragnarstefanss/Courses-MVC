@@ -41,7 +41,13 @@ namespace CoursesApi.Services
 
             return students;
         }
+        public StudentDTO CheckIfInCourse(int courseId, StudentViewModel newStudent)
+        {
+            var student = _repo.CheckIfInCourse(courseId, newStudent);
 
+            return student;
+        }
+        
         public StudentDTO AddStudentToCourse(int courseId,  StudentViewModel newStudent)
         {
             var student = _repo.AddStudentToCourse(courseId, newStudent);

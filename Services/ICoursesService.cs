@@ -12,6 +12,7 @@ namespace CoursesApi.Services
         IEnumerable<StudentDTO> GetStudentsByCourseId(int courseId);
         CourseDetailsDTO AddCourse(CourseViewModel newCourse);
         CourseDetailsDTO UpdateCourse(int courseId, CourseViewModel updatedCourse);
+        StudentDTO CheckIfInCourse(int courseId, StudentViewModel newStudent);
         StudentDTO AddStudentToCourse(int courseId, StudentViewModel newStudent);
         bool DeleteCourseById(int courseId);
     }

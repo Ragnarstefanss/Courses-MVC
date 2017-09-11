@@ -121,13 +121,17 @@ namespace Api.Controllers
             if (newStudent == null) { return BadRequest(); }
             if (!ModelState.IsValid) { return StatusCode(412); }
 
-            var response = _coursesService.AddStudentToCourse(courseId, newStudent);
+            var InCourse = _coursesService.CheckIfInCourse(courseId, newStudent);
+            if(InCourse == null)
+            {
+                return StatusCode(412);
+            }
 
+            var response = _coursesService.AddStudentToCourse(courseId, newStudent);
             if (response == null)
             {
                 return NotFound();
             }
-
             return Ok(response);
         }
 

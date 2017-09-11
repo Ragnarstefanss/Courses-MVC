@@ -37,5 +37,7 @@ namespace CoursesApi.Models.DTOModels
         /// </summary>
         /// <returns></returns>
         public List<StudentDTO> Students { get; set; }
+
+        public int MaxStudents  { get; set; }
     }
 }

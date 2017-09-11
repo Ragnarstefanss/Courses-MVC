@@ -99,6 +99,24 @@ namespace CoursesApi.Repositories
             return students;
         }
 
+        public StudentDTO CheckIfInCourse(int courseId, StudentViewModel newStudent){
+            var student = (from s in _db.Enrollments
+                           where ((s.CourseId == courseId) &&
+                                (s.StudentSSN == newStudent.SSN))
+                           select s).SingleOrDefault();
+
+            if(student != null){
+                return null;
+            }
+            return new StudentDTO
+            {
+                SSN = newStudent.SSN,
+                Name = (from st in _db.Students
+                       where st.SSN == newStudent.SSN
+                       select st).SingleOrDefault().Name
+            };
+        }
+
         public StudentDTO AddStudentToCourse(int courseId, StudentViewModel newStudent)
         {
             var course = (from c in _db.Courses
