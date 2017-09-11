@@ -41,13 +41,36 @@ namespace CoursesApi.Services
 
             return students;
         }
+
+        public IEnumerable<StudentDTO> GetStudentsByWaitingList(int courseId)
+        {
+            var students = _repo.GetStudentsByWaitingList(courseId);
+
+            return students;
+        }
+
         public StudentDTO CheckIfInCourse(int courseId, StudentViewModel newStudent)
         {
             var student = _repo.CheckIfInCourse(courseId, newStudent);
 
             return student;
         }
+
+        public StudentDTO CheckIfInWaitinglist(int courseId, StudentViewModel newStudent)
+        {
+            var student = _repo.CheckIfInWaitinglist(courseId, newStudent);
+
+            return student;
+        }
         
+        
+        public StudentDTO AddStudentToWaitinglist(int courseId,  StudentViewModel newStudent)
+        {
+            var student = _repo.AddStudentToWaitinglist(courseId, newStudent);
+
+            return student;
+        }
+
         public StudentDTO AddStudentToCourse(int courseId,  StudentViewModel newStudent)
         {
             var student = _repo.AddStudentToCourse(courseId, newStudent);

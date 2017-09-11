@@ -98,6 +98,50 @@ namespace CoursesApi.Repositories
 
             return students;
         }
+        
+        public IEnumerable<StudentDTO> GetStudentsByWaitingList(int courseId)
+        {
+            var course = _db.Courses.SingleOrDefault(c => c.Id == courseId);
+
+            if (course == null) 
+            {
+                return null;
+            }
+
+            var students = (from sr in _db.Waitinglist
+                            where sr.CourseId == courseId
+                            join s in _db.Students on sr.StudentSSN equals s.SSN
+                            select new StudentDTO
+                            {
+                                SSN = s.SSN,
+                                Name = s.Name
+                            }).ToList();
+
+            return students;
+        }
+
+        public StudentDTO CheckIfInWaitinglist(int courseId, StudentViewModel newStudent){
+            var studentWaitinglist = (from s in _db.Waitinglist
+                           where ((s.CourseId == courseId) &&
+                                (s.StudentSSN == newStudent.SSN))
+                           select s).SingleOrDefault();
+
+            var studentEnrolled = (from s in _db.Enrollments
+                           where ((s.CourseId == courseId) &&
+                                (s.StudentSSN == newStudent.SSN))
+                           select s).SingleOrDefault();
+
+            if(studentWaitinglist != null || studentEnrolled != null){
+                return null; //skila null til að forritið setji notenda ekki inní gagnagrunn
+            }
+            return new StudentDTO
+            {
+                SSN = newStudent.SSN,
+                Name = (from st in _db.Students
+                       where st.SSN == newStudent.SSN
+                       select st).SingleOrDefault().Name
+            };
+        }
 
         public StudentDTO CheckIfInCourse(int courseId, StudentViewModel newStudent){
             var student = (from s in _db.Enrollments
@@ -117,6 +161,40 @@ namespace CoursesApi.Repositories
             };
         }
 
+        
+
+        public StudentDTO AddStudentToWaitinglist(int courseId, StudentViewModel newStudent)
+        {
+            var course = (from c in _db.Courses
+                          where c.Id == courseId
+                          select c).SingleOrDefault();
+
+            var student = (from s in _db.Students
+                           where s.SSN == newStudent.SSN
+                           select s).SingleOrDefault();
+
+            if (course == null || student == null)
+            {
+                return null;
+            }
+            
+            _db.Waitinglist.Add( 
+                new Waitinglist {CourseId = courseId, StudentSSN = newStudent.SSN}
+            );
+            _db.SaveChanges();
+
+            return new StudentDTO
+            {
+                SSN = newStudent.SSN,
+                Name = (from st in _db.Students
+                       where st.SSN == newStudent.SSN
+                       select st).SingleOrDefault().Name
+            };
+        }
+
+
+
+
         public StudentDTO AddStudentToCourse(int courseId, StudentViewModel newStudent)
         {
             var course = (from c in _db.Courses
@@ -131,7 +209,7 @@ namespace CoursesApi.Repositories
             {
                 return null;
             }
-
+            
             _db.Enrollments.Add( 
                 new Enrollment {CourseId = courseId, StudentSSN = newStudent.SSN}
             );

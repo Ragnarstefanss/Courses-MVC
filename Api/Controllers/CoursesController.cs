@@ -31,7 +31,11 @@ namespace Api.Controllers
         public IActionResult GetCourses(string semester = "20173")
         {
             var courses = _coursesService.GetCourses(semester);
-            
+            if (courses == null)
+            {
+                return NotFound();
+            }
+
             return Ok(courses);
         }
 
@@ -108,6 +112,21 @@ namespace Api.Controllers
             return Ok(students);
         }
 
+
+        [HttpGet]
+        [Route("{courseId:int}/waitinglist")]
+        public IActionResult GetStudentsByWaitingList(int courseId)
+        {
+            var students = _coursesService.GetStudentsByWaitingList(courseId);
+
+            if (students == null)
+            {
+                return NotFound();
+            }
+            
+            return Ok(students);
+        }
+
         /// <summary>
         /// Adds a student to a course. Student must be already in the system
         /// </summary>
@@ -134,6 +153,36 @@ namespace Api.Controllers
             }
             return Ok(response);
         }
+
+        /// <summary>
+        /// Adds a student to a waitinglist. Student must be already in the system
+        /// </summary>
+        /// <param name="courseId">The id of the course</param>
+        /// <param name="newStudent">The new student to add</param>
+        /// <returns>The newly created student</returns>
+        [HttpPost]
+        [Route("{courseId:int}/waitinglist")]
+        public IActionResult AddStudentToWaitinglist(int courseId, [FromBody] StudentViewModel newStudent)
+        {
+            if (newStudent == null) { return BadRequest(); }
+            if (!ModelState.IsValid) { return StatusCode(412); }
+
+            var InCourse = _coursesService.CheckIfInCourse(courseId, newStudent);
+            var onWaitinglist = _coursesService.CheckIfInWaitinglist(courseId, newStudent);
+            if(InCourse == null || onWaitinglist == null)
+            {
+                return StatusCode(412);
+            }
+
+            var response = _coursesService.AddStudentToWaitinglist(courseId, newStudent);
+            if (response == null)
+            {
+                return NotFound();
+            }
+            return Ok(response);
+        }
+
+
 
         /// <summary>
         /// Deletes a student from a course

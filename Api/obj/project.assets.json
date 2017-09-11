@@ -12646,11 +12646,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\HR\\Skoli\\Vefþjónustur\\CoursesApi\\Api\\Api.csproj",
+      "projectUniqueName": "E:\\HR\\Skoli\\Vefþjónustur\\CoursesApi\\api\\Api.csproj",
       "projectName": "Api",
-      "projectPath": "E:\\HR\\Skoli\\Vefþjónustur\\CoursesApi\\Api\\Api.csproj",
+      "projectPath": "E:\\HR\\Skoli\\Vefþjónustur\\CoursesApi\\api\\Api.csproj",
       "packagesPath": "C:\\Users\\Ragnar\\.nuget\\packages\\",
-      "outputPath": "E:\\HR\\Skoli\\Vefþjónustur\\CoursesApi\\Api\\obj\\",
+      "outputPath": "E:\\HR\\Skoli\\Vefþjónustur\\CoursesApi\\api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
