@@ -1,4 +1,4 @@
-# Vefthjonustur
+# Courses registration with Model - View - Controller
 
-[important til að refresha database]
+[important to refresh database]
 dotnet ef migrations add InitialCreate
